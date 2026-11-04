@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+IMAGE="claude-leer"
+CONFIG_VOLUME="claude-leer-config"
+
+PROJECT_DIR="$(pwd)"
+NAME="$(basename "$PROJECT_DIR")"
+
+if [ ! -d "$PROJECT_DIR/.git" ]; then
+  echo "Note: $PROJECT_DIR is not a git repo. Review and issues will be limited."
+fi
+
+mkdir -p "$PROJECT_DIR/docs"
+
+GH_TOKEN="$(pass show github-claude-learn | head -n 1)"
+export GH_TOKEN
+
+docker run -it --rm \
+  -v "$PROJECT_DIR":/workspace/"$NAME":ro \
+  -v "$CONFIG_VOLUME":/home/node/.claude \
+  -v "$PROJECT_DIR/docs":/workspace/"$NAME"/docs \
+  -w /workspace/"$NAME" \
+  -e GH_TOKEN \
+  "$IMAGE" "$@"

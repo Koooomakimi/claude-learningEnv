@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "deny": [
+      "NotebookEdit",
+      "Read(**/node_modules/**)",
+      "Read(**/.venv/**)",
+      "Read(**/venv/**)",
+      "Read(**/__pycache__/**)",
+      "Read(**/target/**)",
+      "Read(**/dist/**)",
+      "Read(**/coverage/**)"
+    ],
+    "allow": [
+      "Edit(docs/**)",
+      "Write(docs/**)",
+      "Read(//etc/claude-code/**)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git status:*)",
+      "Bash(git blame:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh label list:*)"
+    ]
+  }
+}
