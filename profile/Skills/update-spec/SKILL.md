@@ -14,17 +14,20 @@ Update an existing spec in `docs/spec/`. Two modes:
 
 The user is learning and writes all code themselves. The spec records **their** decisions. Never add design decisions they didn't make. You may only write inside `docs/`, and you can't commit: the user reviews and commits.
 
+## Locations: 
+every file and folder this skill reads or writes (the spec folder, glossary, ADR folder, architecture doc, standards, labels file) is listed under "Where things are" in CLAUDE.md. Look them up there; don't assume paths.
+
 ## Process
 
 ### 1. Gather context
 
-If no spec path was given, list `docs/spec/` and ask which spec to update.
+If no spec path was given, list spec folder and ask which spec to update.
 
 Read:
 
 - the spec, in full;
-- the glossary: `docs/GLOSSARY.md`, or, if `docs/GLOSSARY-MAP.md` exists, the map and the context glossaries it points to in `docs/glossary/`;
-- the ADRs in `docs/adr/`;
+- the glossary;
+- the ADRs in the ADR folder;
 - the existing tickets for this spec, to know what is already planned or built:
 
   ```
@@ -37,7 +40,7 @@ Read:
 
 Call the Skill tool with `grilling` and follow its rules for asking questions: the user answers first, then you give your view, at most 3 questions per round.
 
-**Keep the grilling scoped.** This is an update, not a new design session. The scope for `grilling` is the open question or the change, not the whole project. These scope rules take precedence over grilling's default of visiting the whole design tree:
+**Keep the grilling scoped.** This is an update, not a new design session. The scope for `grilling` is the open question or the change, not the whole project. These scope rules take precedence over the defaults of both `grilling` and `domain-modeling`.
 
 - Only ask about branches the question or change actually touches. Everything already in the spec counts as settled; don't reopen it, unless the new answer contradicts it. Then point out the contradiction and ask which one holds.
 - Before asking, check whether the spec, glossary or ADRs already answer it. If so, don't ask.
@@ -53,11 +56,20 @@ In both modes, whenever an answer affects a user story that is covered by a **cl
 
 When terms or decisions come up, also call the Skill tool with `domain-modeling`, so the glossary stays consistent and qualifying decisions get an ADR.
 
-### 3. Propose the changes
+### 3. Second look: glossary and ADRs
 
-Before writing, summarise the changes to the spec as a list, per section: what's added, changed, removed, and which open questions are resolved. Ask the user to confirm.
+Before proposing anything, go over this session once more, limited to the questions and changes worked on in it:
 
-### 4. Apply the changes
+- **Glossary**: project concepts that came up in the user's answers and aren't in the glossary yet: terms they introduced, things they defined while answering, or words whose meaning had to be pinned down. Also existing entries the answers changed the meaning of. Only concepts specific to this project, not general programming terms. Draft each definition from how the user described it.
+- **ADRs**: decisions made in this session that meet all three ADR criteria (hard to reverse, surprising without context, a real trade-off) and aren't recorded yet. For each candidate, give one line on why it qualifies, and ask the user to state the decision and reasons in their own words. Also flag an existing ADR that a decision in this session contradicts: it may need to be superseded.
+
+Skip whatever has nothing to add.
+
+### 4. Propose the changes
+
+Before writing, summarise the changes as a list: per spec section, what's added, changed, removed, and which open questions are resolved; plus the proposed glossary entries and ADRs from step 3. Ask the user to confirm.
+
+### 5. Apply the changes
 
 Edit the spec in place, following these rules:
 
@@ -71,11 +83,11 @@ Edit the spec in place, following these rules:
 
 Do not edit or create GitHub tickets; that's `/to-tickets`' job.
 
-### 5. Wrap up
+### 6. Wrap up
 
 Tell the user:
 
 - which files changed (the spec, and possibly the glossary or an ADR), so they can review with `git diff` and commit;
 - which user stories are new, changed or removed, with their IDs;
 - which existing tickets are affected (open tickets whose stories changed, closed tickets that now need follow-up);
-- that `/to-tickets docs/spec/<slug>.md` will pick up exactly that difference.
+- that `/to-tickets <spec-folder>/<slug>.md` will pick up exactly that difference.

@@ -3,9 +3,25 @@ name: domain-modeling
 description: Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing docs/GLOSSARY.md, or recording or editing an ADR in docs/adr/.
 ---
 
+## Locations: 
+every file and folder this skill reads or writes (the spec folder, glossary, ADR folder, architecture doc, standards, labels file) is listed under "Where things are" in CLAUDE.md. Look them up there; don't assume paths.
+
 # Domain Modeling
 
-Actively build and sharpen the project's domain model as you design. This is the *active* discipline: challenging terms, inventing edge-case scenarios, and writing the glossary and decisions down the moment they crystallise. (Merely *reading* `docs/GLOSSARY.md` for vocabulary is not this skill: that's a one-line habit any skill can do. This skill is for when you're changing the model, not just consuming it.)
+Actively build and sharpen the project's domain model as you design. This is the *active* discipline: challenging terms, inventing edge-case scenarios, and writing the glossary and decisions down the moment they crystallise. (Merely *reading* glossary for vocabulary is not this skill: that's a one-line habit any skill can do. This skill is for when you're changing the model, not just consuming it.)
+
+## Scope
+
+By default, model whatever the conversation is about.
+
+When another skill calls this one and defines a scope (for example "one open
+question" or "one change to an existing spec"):
+
+- Only sharpen terms and invent scenarios that touch that scope.
+- Existing glossary entries and ADRs outside the scope count as settled.
+  Only raise one if something in scope contradicts it.
+- Only cross-reference code that the scope touches.
+- The calling skill's scope rules take precedence over anything below.
 
 ## Context: a learning setup
 
@@ -25,13 +41,15 @@ Most projects have a single context:
 ├── docs/
 │   ├── GLOSSARY.md
 │   ├── spec/
+        ├── <decisions-slug>-decisions.md
+        ├── <spec-slug>.md
 │   └── adr/
 │       ├── 0001-sqlite-for-storage.md
 │       └── 0002-cli-before-gui.md
 └── src/
 ```
 
-If `docs/GLOSSARY-MAP.md` exists, the project has multiple contexts. The map points to where each one lives:
+If glossary exists, the project has multiple contexts. The map points to where each one lives:
 
 ```
 /
@@ -48,7 +66,7 @@ If `docs/GLOSSARY-MAP.md` exists, the project has multiple contexts. The map poi
 └── src/
 ```
 
-Create files lazily: only when you have something to write. If no `docs/GLOSSARY.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
+Create files lazily: only when you have something to write. If no glossary exists, create one when the first term is resolved. If no ADR folder exists, create it when the first ADR is needed.
 
 ## During the session
 
@@ -70,9 +88,9 @@ When the user states how something works, check whether the code agrees. If you 
 
 ### Update the glossary inline
 
-When a term is resolved, update `docs/GLOSSARY.md` right there. Don't batch these up: capture them as they happen. Base the definition on how the user described it, tightened up. Use the format in [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md).
+When a term is resolved, update Glossary right there. Don't batch these up: capture them as they happen. Base the definition on how the user described it, tightened up. Use the format in [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md).
 
-The glossary should be totally devoid of implementation details. Do not treat it as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else. Specs live in `docs/spec/`.
+The glossary should be totally devoid of implementation details. Do not treat it as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else. Specs live in the spec folder.
 
 ### Offer ADRs sparingly
 

@@ -12,6 +12,7 @@ if [ ! -d "$PROJECT_DIR/.git" ]; then
 fi
 
 mkdir -p "$PROJECT_DIR/docs"
+mkdir -p "$PROJECT_DIR/docs/reviews"
 
 GH_TOKEN="$(pass show github-claude-learn | head -n 1)"
 export GH_TOKEN

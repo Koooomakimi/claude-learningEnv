@@ -10,6 +10,8 @@ Break a spec into a set of **tickets**: tracer-bullet vertical slices, each decl
 
 The user is learning and writes all code themselves. Tickets describe **what** must work and how to verify it, never **how** to build it. The issue tracker is GitHub, used via the `gh` CLI (see CLAUDE.md).
 
+## Locations: every file and folder this skill reads or writes (the spec folder, glossary, ADR folder, architecture doc, standards, labels file) is listed under "Where things are" in CLAUDE.md. Look them up there; don't assume paths.
+
 ## Process
 
 ### 1. Gather context
@@ -18,9 +20,9 @@ The user passes a spec path as an argument, e.g. `/to-tickets docs/spec/task-tra
 
 Read:
 
-- the spec, in full;
-- the glossary: `docs/GLOSSARY.md`, or, if `docs/GLOSSARY-MAP.md` exists, the map and the context glossaries it points to in `docs/glossary/`;
-- the ADRs in `docs/adr/`.
+- the spec in the spec folder, in full;
+- the glossary;
+- the ADRs in ADR folder.
 
 Use the glossary vocabulary in all ticket titles and descriptions, and respect the ADRs.
 
@@ -50,8 +52,8 @@ Never create a ticket for a story that is already covered.
 
 Skip this step if the project has little or no code yet.
 
-Otherwise, use `docs/ARCHITECTURE.md` and the closed tickets as your map of
-what exists. If there's no ARCHITECTURE.md yet, use the folder structure and
+Otherwise, use the Architecture doc and the closed tickets as your map of
+what exists. If there's no Achitecture doc yet, use the folder structure and
 the closed tickets, and suggest running `/update-architecture` afterwards.
 Only open files that the uncovered or changed stories will touch. Don't
 survey the whole codebase.
@@ -98,8 +100,7 @@ Iterate until the user approves.
 
 ### 6. Publish to GitHub
 
-Check the labels first with `gh label list`. Use the label names and rules
-from the labels file listed in CLAUDE.md. If a label it prescribes doesn't
+Check the labels first with `gh label list`. Use the label names and rules from the labels file listed in CLAUDE.md. If a label it prescribes doesn't
 exist in the repo yet, propose creating it.
 
 Then, after the user's approval:

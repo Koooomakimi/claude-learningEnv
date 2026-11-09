@@ -1,7 +1,7 @@
 ---
 name: code-review
 description: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow the user's coding standards?) and Spec (does the code match the ticket and its spec?). Runs both reviews in parallel sub-agents, reports them side by side, and ends with a learning section. Use when the user wants to review a branch, work-in-progress changes, or asks to "review since X".
-argument-hint: [fixed point, e.g. main] [ticket, e.g. #12]
+argument-hint: '[fixed point, e.g. main] [ticket, e.g. #12]'
 ---
 
 Two-axis review of the diff between HEAD and a fixed point:
@@ -14,6 +14,9 @@ Both axes run as parallel sub-agents so they don't pollute each other's context,
 The user writes all code themselves and is learning. Never fix the code, not in the report and not in the sub-agents: give hints, not solutions.
 
 The issue tracker is GitHub, used via the `gh` CLI (see CLAUDE.md).
+
+## Locations: 
+every file and folder this skill reads or writes (the spec folder, glossary, ADR folder, architecture doc, standards, labels file) is listed under "Where things are" in CLAUDE.md. Look them up there; don't assume paths.
 
 ## Process
 
@@ -34,18 +37,14 @@ Find the ticket, in this order:
 
 Fetch the ticket with `gh issue view <number>`.
 
-If the ticket has a **Spec** section, read that spec file in `docs/spec/`, and focus on the user stories listed under the ticket's **Covers** section. The ticket's acceptance criteria are the main yardstick; the spec gives the context and the why.
+If the ticket has a **Spec** section, read that spec file (you can find this spec file by looking at the "where are things" section in the CLAUDE.md file), and focus on the user stories listed under the ticket's **Covers** section. The ticket's acceptance criteria are the main yardstick; the spec gives the context and the why.
 
 If no ticket is found, ask the user which issue it is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
 
 ### 3. Identify the standards sources
 
-Collect every file that documents how code should be written:
-
-- `/etc/claude-code/CODING_STANDARDS.md`: the user's personal standards, if it exists;
-- `docs/CODING_STANDARDS.md` or `CONTRIBUTING.md` in the project, if they exist; project standards override personal ones where they conflict;
-- the glossary (`docs/GLOSSARY.md`, or the files listed in `docs/GLOSSARY-MAP.md`): names in the code should use the glossary's terms, not its `_Avoid_` words.
-
+Collect from claude.md every file that documents how code should be written:
+personal standards, project standards, review guidelines named in the project CLAUDE.md, the glossary, the ADR folder”
 On top of these, the Standards axis always carries the smell baseline below: a fixed set of Fowler code smells (Refactoring, ch.3) that applies even when nothing is documented. Two rules bind it:
 
 - **Documented standards override.** A documented standard always wins; where it endorses something the baseline would flag, suppress the smell.
@@ -68,7 +67,8 @@ Each smell reads what it is → how to fix; match it against the diff:
 
 ### 4. Spawn both sub-agents in parallel
 
-Issue both sub-agent calls together, in the foreground, and aggregate the reports they return.
+Issue both sub-agent calls together, in the foreground, and aggregate the reports they return. 
+Sub-agents don't see CLAUDE.md: give each one the concrete paths of every file it needs.
 
 **Standards sub-agent** prompt should include:
 
@@ -76,7 +76,7 @@ Issue both sub-agent calls together, in the foreground, and aggregate the report
 - The list of standards-source files you found in step 3, plus the smell baseline from step 3 pasted in full (the sub-agent has no other access to it).
 - The brief:
 
-  "The user is learning and writes all code themselves. Report, per file/hunk where relevant, (a) every place the diff violates a documented standard: cite the standard (file + the rule); (b) names that don't match the glossary; and (c) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls: documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented standard overrides the baseline. Skip anything tooling enforces.
+  "The user is learning and writes all code themselves. Report, per file/hunk where relevant, (a) every place the diff violates a documented standard: cite the standard (file + the rule); (b) names that don't match the glossary; (c) anything that goes against an ADR (as defined in /docs/adr/): cite the ADR; and (d) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls: documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented standard overrides the baseline. Skip anything tooling enforces.
 
   For every finding, give:
   - Severity: blocker / should-fix / nit
@@ -124,7 +124,21 @@ Present the two reports under `## Standards` and `## Spec` headings, verbatim or
 
 End with a one-line summary: total findings per axis, and the worst issue within each axis (if any). Don't pick a single winner across axes: that's the reranking the separation exists to prevent.
 
-### 6. Learning
+### 6. Save the report
+
+Write the full report to `docs/reviews/<branch>.md`. Start it with a
+**Fix before merge** checklist: every blocker and should-fix finding that
+belongs in this ticket, as `- [ ] <location>: <what>`. Then the Standards,
+Spec and Learning sections as presented.
+
+If a report for this branch already exists, this is a re-review: before
+writing, compare with it. Mark each earlier "Fix before merge" item as fixed
+or still open, and keep the still-open ones in the new checklist. Then
+replace the file.
+
+Tell the user the path, so they can tick items off as they work.
+
+### 7. Learning
 
 After the summary, add a `## Learning` section:
 

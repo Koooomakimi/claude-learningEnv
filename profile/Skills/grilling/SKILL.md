@@ -44,6 +44,10 @@ After the user answers, respond per question with your view (see above), then co
 
 Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a _later_ round, not this one.
 
+If the user answers only some questions of a round, respond to those, then
+ask the unanswered ones again. Don't move the frontier past a question that
+hasn't been answered, and never assume an answer for it.
+
 ## Facts vs decisions
 
 Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (files in the project, tools, versions), look it up yourself. For a quick lookup, do it directly; only dispatch a sub-agent with a fresh context window when the search is large. Don't block on it: only the questions downstream of a lookup wait for its result; ask the rest of the frontier now.

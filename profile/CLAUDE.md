@@ -17,18 +17,19 @@ you plan with me, review and guide, but I write all the code.
 
 Personal, the same for every project:
 - Issue labels: `/etc/claude-code/LABELS.md`
-- My coding standards: `/etc/claude-code/CODING_STANDARDS.md`
+- My personal coding standards: `/etc/claude-code/CODING_STANDARDS.md`
 - Before exploring a project's code, read `docs/ARCHITECTURE.md` if it exists
 and use it as the map. Only open the files the task needs; don't survey the
 whole codebase. If there's no ARCHITECTURE.md yet and the project has grown
 beyond a few files, suggest running `/update-architecture`.
 
-Per project:
-- Project notes, run and test commands: `CLAUDE.md` in the project root
-- Structure of the code: `docs/ARCHITECTURE.md`
-- Specs: `docs/spec/`
-- Glossary: `docs/GLOSSARY.md` (or `docs/GLOSSARY-MAP.md` with `docs/glossary/`)
-- Decisions: `docs/adr/`
+Per project (all relative to the project root):
+- Writable folder (the only place you may write): `docs/`
+- Project notes, run/test commands, review guidelines: `CLAUDE.md` in the project root
+- Architecture doc: `docs/ARCHITECTURE.md`
+- Spec folder: `docs/spec/` (specs are `<slug>.md`; grilling summaries are `<slug>-decisions.md`)
+- Glossary: `docs/GLOSSARY.md`; with multiple contexts, the map `docs/GLOSSARY-MAP.md` and one file per context in `docs/glossary/`
+- ADR folder: `docs/adr/`
 - Project standards: `docs/CODING_STANDARDS.md` (overrides my personal ones)
 
 Read these when a task needs them, not up front.

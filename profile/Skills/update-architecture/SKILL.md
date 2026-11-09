@@ -13,9 +13,12 @@ It is not a spec (what will be built), not a glossary (what things are called) a
 
 The user is learning. Describing their own architecture is the exercise, so **the user describes first, you check**. Never write a description of the code the user hasn't confirmed. You may only write inside `docs/`; the user reviews and commits.
 
+## Locations: 
+every file and folder this skill reads or writes (the spec folder, glossary, ADR folder, architecture doc, standards, labels file) is listed under "Where things are" in CLAUDE.md. Look them up there; don't assume paths.
+
 ## Pick the mode
 
-- `docs/ARCHITECTURE.md` doesn't exist → **Create**.
+- the architecture doc doesn't exist → **Create**.
 - The user passed `full` → **Full check**.
 - Otherwise → **Incremental**.
 
@@ -26,18 +29,18 @@ If the project has only a few files and no real separate parts yet, say that an 
 1. Ask the user to describe their architecture in their own words: the main parts, what each does, how they talk to each other, where the data lives. Rough is fine. Wait for it.
 2. Survey the code yourself: the folders and main files. Skip dependency and build folders. In a larger project, dispatch an Explore sub-agent for the survey and use its summary, to keep this conversation small.
 3. Compare the user's description with the code, and report per point: what matches, what is missing from their description, and what they described differently from how the code actually works. Ask about each difference; don't decide it yourself. A difference can mean the description is wrong, or the code is: let the user say which.
-4. Once settled, write `docs/ARCHITECTURE.md` with the template below, based on the user's description, corrected only where they agreed.
+4. Once settled, write the architecture doc with the template below, based on the user's description, corrected only where they agreed.
 
 ## Incremental (default)
 
 The existing doc is your map of everything that didn't change. Don't survey the codebase: trust the doc for unchanged parts, and only open files that changed.
 
-1. Read `docs/ARCHITECTURE.md` in full.
+1. Read the architecture doc in full.
 
 2. Find the last commit that touched the doc:
 
    ```
-   git log -1 --format=%H -- docs/ARCHITECTURE.md
+   git log -1 --format=%H -- <architecture doc path>   
    ```
 
 3. List what changed in the code since then:
@@ -56,7 +59,7 @@ The existing doc is your map of everything that didn't change. Don't survey the 
 
 Use once per milestone, or when the doc and the code may have drifted apart.
 
-1. Read `docs/ARCHITECTURE.md`. Ask the user if they know of anything that's out of date.
+1. Read the architecture doc. Ask the user if they know of anything that's out of date.
 2. Survey the whole codebase with an Explore sub-agent, asking it to compare the code with the doc section by section.
 3. Report: what's still accurate, what's outdated, what's missing. Ask about each difference.
 4. Propose the edits per section and apply them once the user confirms.
@@ -90,7 +93,7 @@ Keep it short: a map, not a manual. Aim for under 100 lines. Use the glossary's 
 
 ## Decisions
 
-{Links to the ADRs in docs/adr/ that explain the shape above.}
+{Links to the ADRs in ADR folder that explain the shape above.}
 ```
 
 ## Wrap up

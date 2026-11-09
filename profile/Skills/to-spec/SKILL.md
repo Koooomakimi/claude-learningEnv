@@ -1,12 +1,15 @@
 ---
 name: to-spec
-description: "Turn the grilling session (current conversation, or a saved decision summary) into a spec in docs/spec/: no interview, just synthesis of what has already been decided."
+description: "Turn the grilling session (current conversation, or a saved decision summary) into a spec in spec folder. no interview, just synthesis of what has already been decided."
 disable-model-invocation: true
 ---
 
 This skill turns what has already been decided into a spec. Do NOT interview the user about the design; just synthesize what you already know.
 
 The user is learning and writes all code themselves. The spec records **their** decisions. Never add design decisions they didn't make; if something important is undecided, list it under Open Questions instead of deciding it yourself.
+
+## Locations 
+every file and folder this skill reads or writes (the spec folder, glossary, ADR folder, architecture doc, standards, labels file) is listed under "Where things are" in CLAUDE.md. Look them up there; don't assume paths.
 
 ## Inputs
 
@@ -16,7 +19,8 @@ This skill normally runs right after `/grill-with-docs`, in the same session. Us
 2. **A file the user passes as an argument**, e.g. `/to-spec docs/spec/task-tracker-decisions.md`: a saved decision summary from an earlier grilling.
 3. If neither exists, tell the user to run `/grill-with-docs` first, and stop.
 
-In all cases, also read the glossary: `docs/GLOSSARY.md`, or, if `docs/GLOSSARY-MAP.md` exists, the map and the context glossaries it points to in `docs/glossary/`. Also read the ADRs in `docs/adr/`. Use the glossary vocabulary throughout the spec, and respect the ADRs.
+- In all cases, also read the glossary. 
+- Also read the ADRs in ADR folder. Use the glossary vocabulary throughout the spec, and respect the ADRs.
 
 ### What to take from a grilling session
 
@@ -27,7 +31,7 @@ After `/grill-with-docs`, the conversation contains these parts. Use them as fol
 - **Your own views during the grilling** are not decisions. Only include them where the user explicitly agreed. A view the user rejected or ignored stays out.
 - **Questions the user answered with "I don't know" or left for later** go to Open Questions, not to a section as if they were decided.
 - **Terms resolved during the session** are in the glossary files; use those exact terms.
-- **ADRs written during the session** are in `docs/adr/`; reference them from Implementation Decisions instead of repeating their content.
+- **ADRs written during the session** are in the ADR folder; reference them from Implementation Decisions instead of repeating their content.
 
 Map the material to the spec sections:
 
@@ -50,11 +54,11 @@ If a section has no material, don't fill it with your own ideas: write that it w
 
    The first time, explain in one or two sentences what a seam is. Then ask the user where they think the seams should be, before giving your view. Settle this with the user before writing.
 
-3. Write the spec using the template below, to `docs/spec/<slug>.md`. Pick a short, descriptive slug and tell the user the path.
+3. Write the spec using the template below, to the spec folder, as <slug>.md. Pick a short, descriptive slug and tell the user the path.
 
    Do not publish it to GitHub. The spec lives in the repo; the tickets made from it (with `/to-tickets`) go to GitHub.
 
-4. Tell the user to review the spec and commit it. Mention that `/to-tickets docs/spec/<slug>.md` is the next step.
+4. Tell the user to review the spec and commit it. Mention that `/to-tickets <spec-folder>/<slug>.md` is the next step.
 
 <spec-template>
 
@@ -87,7 +91,7 @@ The implementation decisions the user made. This can include:
 - The modules that will be built/modified
 - The interfaces of those modules
 - Technical clarifications from the user
-- Architectural decisions (link the ADR in `docs/adr/` where one exists)
+- Architectural decisions (link the ADR in ADR folder where one exists)
 - Data or storage format
 - Specific interactions
 

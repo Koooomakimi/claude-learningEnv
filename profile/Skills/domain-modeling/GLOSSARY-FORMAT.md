@@ -1,5 +1,8 @@
 # Glossary Format
 
+# Locations: 
+every file and folder this skill reads or writes (the spec folder, glossary, ADR folder, architecture doc, standards, labels file) is listed under "Where things are" in CLAUDE.md. Look them up there; don't assume paths.
+
 ## Structure
 
 ```md
@@ -33,7 +36,7 @@ _Avoid_: Client, buyer, account
 
 All glossary files live in `docs/`, because that is the only writable folder.
 
-**Single context (most projects):** One `docs/GLOSSARY.md`.
+**Single context (most projects):** One glossary.
 
 **Multiple contexts:** A `docs/GLOSSARY-MAP.md` lists the contexts, where their glossaries live, and how they relate to each other. Each context's glossary lives in `docs/glossary/<context>.md`:
 
@@ -56,8 +59,8 @@ All glossary files live in `docs/`, because that is the only writable folder.
 The skill infers which structure applies:
 
 - If `docs/GLOSSARY-MAP.md` exists, read it to find contexts
-- If only `docs/GLOSSARY.md` exists, single context
-- If neither exists, create `docs/GLOSSARY.md` lazily when the first term is resolved
+- If only glossary exists, single context
+- If neither exists, create glossary lazily when the first term is resolved
 
 When multiple contexts exist, infer which one the current topic relates to. If unclear, ask.
 

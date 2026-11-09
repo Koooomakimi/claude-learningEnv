@@ -1,8 +1,11 @@
+# Locations: 
+every file and folder this skill reads or writes (the spec folder, glossary, ADR folder, architecture doc, standards, labels file) is listed under "Where things are" in CLAUDE.md. Look them up there; don't assume paths.
+
 # ADR Format
 
-ADRs (Architecture Decision Records) live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc. In a multi-context project, context-specific decisions go in `docs/adr/<context>/`, with their own numbering.
+ADRs (Architecture Decision Records) live in ADR folder and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc. In a multi-context project, context-specific decisions go in `<ADR folder>/<context>/`, with their own numbering.
 
-Create the `docs/adr/` directory lazily: only when the first ADR is needed.
+Create the ADR folder directory lazily: only when the first ADR is needed.
 
 ## Template
 
@@ -26,7 +29,7 @@ Only include these when they add genuine value. Most ADRs won't need them.
 
 ## Numbering
 
-Scan `docs/adr/` (or `docs/adr/<context>/`) for the highest existing number and increment by one.
+Scan ADR folder (or `<ADR folder>/<context>/`) for the highest existing number and increment by one.
 
 ## When to offer an ADR
 
